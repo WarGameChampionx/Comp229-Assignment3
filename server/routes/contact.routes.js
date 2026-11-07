@@ -1,5 +1,8 @@
 import express from "express";
-import { requireAuth } from "../middleware/auth.middleware.js";
+import {
+    requireAuth,
+    requireAdmin
+} from "../middleware/auth.middleware.js";
 
 import {
     getContacts,
@@ -11,12 +14,15 @@ import {
 
 const router = express.Router();
 
-router.get("/", requireAuth, getContacts);
-router.get("/:id", requireAuth, getContactById);
+// Administrator-only access to submissions
+router.get("/", requireAuth, requireAdmin, getContacts);
+router.get("/:id", requireAuth, requireAdmin, getContactById);
 
+// Public contact form submission
 router.post("/", createContact);
 
-router.put("/:id", requireAuth, updateContact);
-router.delete("/:id", requireAuth, deleteContact);
+// Administrator-only modifications
+router.put("/:id", requireAuth, requireAdmin, updateContact);
+router.delete("/:id", requireAuth, requireAdmin, deleteContact);
 
 export default router;

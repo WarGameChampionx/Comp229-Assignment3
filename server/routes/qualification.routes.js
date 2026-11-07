@@ -1,5 +1,8 @@
 import express from "express";
-import { requireAuth } from "../middleware/auth.middleware.js";
+import {
+    requireAuth,
+    requireAdmin
+} from "../middleware/auth.middleware.js";
 
 import {
     getQualifications,
@@ -11,11 +14,13 @@ import {
 
 const router = express.Router();
 
+// Public read access
 router.get("/", getQualifications);
 router.get("/:id", getQualificationById);
 
-router.post("/", requireAuth, createQualification);
-router.put("/:id", requireAuth, updateQualification);
-router.delete("/:id", requireAuth, deleteQualification);
+// Administrator-only modifications
+router.post("/", requireAuth, requireAdmin, createQualification);
+router.put("/:id", requireAuth, requireAdmin, updateQualification);
+router.delete("/:id", requireAuth, requireAdmin, deleteQualification);
 
 export default router;

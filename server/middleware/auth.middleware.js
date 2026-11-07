@@ -41,3 +41,14 @@ export const requireAuth = async (req, res, next) => {
         });
     }
 };
+
+// Require administrator privileges.
+export const requireAdmin = (req, res, next) => {
+    if (!req.user || req.user.role !== "admin") {
+        return res.status(403).json({
+            message: "Access denied. Administrator privileges required."
+        });
+    }
+
+    next();
+};

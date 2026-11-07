@@ -1,5 +1,8 @@
 import express from "express";
-import { requireAuth } from "../middleware/auth.middleware.js";
+import {
+    requireAuth,
+    requireAdmin
+} from "../middleware/auth.middleware.js";
 
 import {
     getProjects,
@@ -11,11 +14,13 @@ import {
 
 const router = express.Router();
 
+// Public read access
 router.get("/", getProjects);
 router.get("/:id", getProjectById);
 
-router.post("/", requireAuth, createProject);
-router.put("/:id", requireAuth, updateProject);
-router.delete("/:id", requireAuth, deleteProject);
+// Administrator-only modifications
+router.post("/", requireAuth, requireAdmin, createProject);
+router.put("/:id", requireAuth, requireAdmin, updateProject);
+router.delete("/:id", requireAuth, requireAdmin, deleteProject);
 
 export default router;

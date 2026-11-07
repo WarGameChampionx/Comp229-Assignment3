@@ -75,6 +75,17 @@ export const updateUser = async (req, res) => {
 
         if (password !== undefined)
         {
+            if (
+                typeof password !== "string" ||
+                password.length < 12 ||
+                Buffer.byteLength(password, "utf8") > 72
+            )
+            {
+                return res.status(400).json({
+                    message: "Password must be at least 12 characters and at most 72 UTF-8 bytes."
+                });
+            }
+
             user.password = password;
         }
 

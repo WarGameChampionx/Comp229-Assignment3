@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix client\" \"nodemon server.js\""
   },
-  "name": "mern_skeleton",
+  "name": "comp229-assignment3",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",

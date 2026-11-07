@@ -12,12 +12,12 @@ const router = express.Router();
 router.post("/signup", signUp);
 router.post("/signin", signIn);
 
-// A simple protected route for testing.
 router.get("/me", requireAuth, (req, res) => {
     res.json({
         id: req.user._id,
         name: req.user.name,
-        email: req.user.email
+        email: req.user.email,
+        role: req.user.role
     });
 });
 
