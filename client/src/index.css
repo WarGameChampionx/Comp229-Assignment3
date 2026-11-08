@@ -422,3 +422,303 @@ main {
     text-align: center;
   }
 }
+
+
+/* ==========================================
+   Assignment 3 - Navigation Improvements
+   ========================================== */
+
+.site-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.nav-main,
+.nav-account {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+}
+
+.nav-main a,
+.nav-account a {
+    display: inline-block;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.nav-account {
+    padding-top: 12px;
+    border-top: 1px solid #383838;
+}
+
+.nav-welcome {
+    color: #cccccc;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.nav-logout {
+    padding: 8px 14px;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.nav-logout:hover {
+    background-color: #555555;
+}
+
+/* ==========================================
+   Assignment 3 - Authentication Pages
+   ========================================== */
+
+.auth-page {
+    max-width: 550px;
+    margin: 30px auto;
+    padding: 35px 40px;
+}
+
+.auth-page h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+}
+
+.auth-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px;
+    background-color: #222222;
+    border-radius: 8px;
+}
+
+.auth-page form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-page label {
+    font-weight: 600;
+}
+
+.auth-page input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    background-color: #111111;
+    color: #ffffff;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.auth-page input:focus {
+    outline: 2px solid #61dafb;
+    border-color: transparent;
+}
+
+.auth-page button {
+    padding: 12px 20px;
+    background-color: #444444;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.auth-page button:hover:not(:disabled) {
+    background-color: #666666;
+}
+
+.auth-page button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.auth-page p {
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.auth-page a {
+    color: #61dafb;
+}
+
+.auth-page [role="alert"] {
+    color: #ff8080;
+    margin: 0;
+}
+
+.auth-page [role="status"] {
+    color: #90ee90;
+    margin: 0;
+}
+
+/* ==========================================
+   Assignment 3 - Responsive Improvements
+   ========================================== */
+
+@media (max-width: 600px) {
+    .site-nav {
+        gap: 12px;
+    }
+
+    .nav-main,
+    .nav-account {
+        gap: 12px 16px;
+    }
+
+    .auth-page {
+        margin: 15px auto;
+        padding: 20px;
+    }
+
+    .auth-page form {
+        padding: 20px;
+    }
+}
+
+/* Assignment 3 - Contact submission feedback */
+
+.form-success {
+    color: #90ee90;
+    margin-bottom: 20px;
+}
+
+.contact-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   Assignment 3 - Administrator Dashboard
+   ========================================== */
+
+.admin-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.admin-page h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.admin-section {
+    margin-top: 35px;
+    padding: 30px;
+    background-color: #222222;
+    border-radius: 8px;
+}
+
+.admin-section h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.admin-section h4 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.admin-records {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-record {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    background-color: #16171d;
+    border: 1px solid #444444;
+    border-radius: 6px;
+}
+
+.admin-record p {
+    margin: 8px 0;
+    color: #cccccc;
+    line-height: 1.5;
+}
+
+.admin-record small {
+    color: #aaaaaa;
+    overflow-wrap: anywhere;
+}
+
+.admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.admin-actions button {
+    padding: 10px 16px;
+    color: white;
+    background-color: #444444;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.admin-actions button:hover:not(:disabled) {
+    background-color: #666666;
+}
+
+.admin-actions .admin-delete {
+    background-color: #803838;
+}
+
+.admin-actions .admin-delete:hover:not(:disabled) {
+    background-color: #a04444;
+}
+
+.admin-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-form {
+    padding: 20px;
+    background-color: #16171d;
+    border-radius: 6px;
+}
+
+.admin-form .form-group input,
+.admin-form .form-group textarea {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .admin-page {
+        padding: 20px;
+    }
+
+    .admin-section {
+        padding: 18px;
+    }
+
+    .admin-record {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+

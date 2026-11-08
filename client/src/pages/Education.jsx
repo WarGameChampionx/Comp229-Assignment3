@@ -1,40 +1,110 @@
+
+import { useEffect, useState } from 'react'
+import { getQualifications } from '../services/api'
+
+// Additional details for existing qualifications.
+const educationDetails = {
+    'Advanced Diploma, Game Programming': [
+        'Academic record to date: 9 A+ and 3 A grades',
+        'Developing with Unity and HTML/CSS/JavaScript'
+    ],
+    'Advanced Diploma, Mechanical Engineering Technology': [
+        '3.8 GPA',
+        'Developing with Java, OpenGL, and OpenAL'
+    ],
+    'Bachelor of Science, Physics': [
+        'Recipient of R.M. Hobson Award, 2007',
+        "Dean's Honour Roll, 2007"
+    ]
+}
+
 export default function Education() {
-  return (
-    <main className="education-page">
-      <h2>Education</h2>
+    const [qualifications, setQualifications] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
 
-      {/* Current game programming education */}
-      <section className="education-entry">
-        <h3>Advanced Diploma, Game Programming</h3>
-        <p className="education-meta">Centennial College - Toronto, ON | Sep 2025 – Present</p>
+    useEffect(() => {
+        let active = true
 
-        <ul>
-          <li>Academic record to date: 9 A+ and 3 A grades</li>
-          <li>Developing with Unity and HTML/CSS/JavaScript</li>
-        </ul>
-      </section>
+        async function loadQualifications() {
+            try {
+                const data = await getQualifications()
 
-      {/* Mechanical engineering technology education */}
-      <section className="education-entry">
-        <h3>Advanced Diploma, Mechanical Engineering Technology</h3>
-        <p className="education-meta">Centennial College - Scarborough, ON | Sep 2016 – Apr 2019</p>
+                if (active) {
+                    setQualifications(data)
+                }
+            } catch (err) {
+                if (active) {
+                    setError(err.message)
+                }
+            } finally {
+                if (active) {
+                    setLoading(false)
+                }
+            }
+        }
 
-        <ul>
-          <li>3.8 GPA</li>
-          <li>Developing with Java, OpenGL, and OpenAL</li>
-        </ul>
-      </section>
+        loadQualifications()
 
-      {/* Physics education */}
-      <section className="education-entry">
-        <h3>Bachelor of Science, Physics</h3>
-        <p className="education-meta">York University - Toronto, ON | Sep 2005 – Apr 2010</p>
+        return () => {
+            active = false
+        }
+    }, [])
 
-        <ul>
-          <li>Recipient of R.M. Hobson Award, 2007</li>
-          <li>Dean's Honour Roll, 2007</li>
-        </ul>
-      </section>
-    </main>
-  )
+    return (
+        <main className="education-page">
+            <h2>Education</h2>
+
+            {loading && (
+                <p role="status">Loading qualifications...</p>
+            )}
+
+            {error && (
+                <p className="form-error" role="alert">
+                    Unable to load qualifications: {error}
+                </p>
+            )}
+
+            {!loading && !error && qualifications.length === 0 && (
+                <p>No qualifications are currently available.</p>
+            )}
+
+            {!loading && !error && qualifications.map(qualification => {
+                const details =
+                    educationDetails[qualification.title] || []
+
+                return (
+                    <section
+                        key={qualification._id}
+                        className="education-entry"
+                    >
+                        <h3>{qualification.title}</h3>
+
+                        <p className="education-meta">
+                            {qualification.description}
+                        </p>
+
+                        {qualification.completion && (
+                            <p>
+                                <strong>Completed: </strong>
+                                {new Date(
+                                    qualification.completion
+                                ).toLocaleDateString()}
+                            </p>
+                        )}
+
+                        {details.length > 0 && (
+                            <ul>
+                                {details.map(detail => (
+                                    <li key={detail}>
+                                        {detail}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </section>
+                )
+            })}
+        </main>
+    )
 }

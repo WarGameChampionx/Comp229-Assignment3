@@ -32,7 +32,22 @@ export const getContactById = async (req, res) => {
 export const createContact = async (req, res) => {
     try
     {
-        const contact      = new Contact(req.body);
+        const {
+            firstName,
+            lastName,
+            contactNumber,
+            email,
+            message
+        } = req.body;
+
+        const contact = new Contact({
+            firstName,
+            lastName,
+            contactNumber,
+            email,
+            message
+        });
+
         const savedContact = await contact.save();
 
         res.status(201).json(savedContact);

@@ -1,103 +1,144 @@
-import factoryImage       from '../assets/Project1.png'
-import gardensImage       from '../assets/Project2.png'
+
+import { useEffect, useState } from 'react'
+import { getProjects } from '../services/api'
+
+import factoryImage from '../assets/Project1.png'
+import gardensImage from '../assets/Project2.png'
 import climbTheTowerImage from '../assets/Project3.png'
 
+// Additional presentation details for existing portfolio projects.
+const projectDetails = {
+    'Factory Through The Ages': {
+        image: factoryImage,
+        role: 'Independent Game Developer',
+        outcome: 'Completed and released as a playable HTML5 browser game on itch.io.',
+        link: 'https://wargamechampion.itch.io/factory-through-the-ages'
+    },
+    'Gardens of Music': {
+        image: gardensImage,
+        role: 'Independent Game Developer',
+        outcome: 'Developed into a downloadable simulation focused on procedural audio, creativity, and experimentation.',
+        link: 'https://wargamechampion.itch.io/gardens-of-music'
+    },
+    'HM4: Climb the Tower': {
+        image: climbTheTowerImage,
+        role: 'Independent Game Developer',
+        outcome: 'Produced and released a playable prototype featuring combat, progression, and unlockable content.',
+        link: 'https://wargamechampion.itch.io/heroes-and-monsters-4'
+    }
+}
+
 export default function Projects() {
-  return (
-    <main className="projects-page">
-      <h2>Projects</h2>
-      <p className="projects-intro">Here are 3 games I designed and developed</p>
+    const [projects, setProjects] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
 
-      <div className="projects-list">
+    useEffect(() => {
+        let active = true
 
-        {/* Factory management game project */}
-        <article className="project-card">
-          <img src={factoryImage} alt="Factory Through The Ages" className="project-image"/>
+        async function loadProjects() {
+            try {
+                const data = await getProjects()
 
-          <div className="project-info">
-            <h3>Factory Through The Ages</h3>
+                if (active) {
+                    setProjects(data)
+                }
+            } catch (err) {
+                if (active) {
+                    setError(err.message)
+                }
+            } finally {
+                if (active) {
+                    setLoading(false)
+                }
+            }
+        }
 
-            <p>
-              An incremental factory-management game where players progress
-              from primitive production through increasingly advanced
-              technological eras. Players gather resources, research
-              technologies, unlock production recipes, and automate their
-              growing factory.
+        loadProjects()
+
+        return () => {
+            active = false
+        }
+    }, [])
+
+    return (
+        <main className="projects-page">
+            <h2>Projects</h2>
+            <p className="projects-intro">
+                Here are some games I designed and developed.
             </p>
 
-            <p>
-              <strong>Role:</strong> Independent Game Developer
-            </p>
+            {loading && <p role="status">Loading projects...</p>}
 
-            <p>
-              <strong>Outcome:</strong> Completed and released as a playable HTML5 browser game on itch.io.
-            </p>
+            {error && (
+                <p className="form-error" role="alert">
+                    Unable to load projects: {error}
+                </p>
+            )}
 
-            <a href="https://wargamechampion.itch.io/factory-through-the-ages" target="_blank" rel="noopener noreferrer">
-              View on itch.io
-            </a>
-          </div>
-        </article>
+            {!loading && !error && projects.length === 0 && (
+                <p>No projects are currently available.</p>
+            )}
 
-        {/* Procedural music and gardening project */}
-        <article className="project-card">
-          <img src={gardensImage} alt="Gardens of Music" className="project-image"/>
+            <div className="projects-list">
+                {projects.map(project => {
+                    const details = projectDetails[project.title] || {}
 
-          <div className="project-info">
-            <h3>Gardens of Music</h3>
+                    return (
+                        <article
+                            key={project._id}
+                            className="project-card"
+                        >
+                            {details.image && (
+                                <img
+                                    src={details.image}
+                                    alt={project.title}
+                                    className="project-image"
+                                />
+                            )}
 
-            <p>
-              A relaxing creative sandbox that combines gardening with
-              procedural music. Different plants generate musical notes at
-              their own rhythms, allowing the player's garden to gradually
-              become a unique, evolving musical composition.
-            </p>
+                            <div className="project-info">
+                                <h3>{project.title}</h3>
 
-            <p>
-              <strong>Role:</strong> Independent Game Developer
-            </p>
+                                <p>{project.description}</p>
 
-            <p>
-              <strong>Outcome:</strong> Developed into a downloadable
-              simulation focused on procedural audio, creativity, and
-              experimentation.
-            </p>
+                                {project.completion && (
+                                    <p>
+                                        <strong>Completion: </strong>
+                                        {new Date(
+                                            project.completion
+                                        ).toLocaleDateString()}
+                                    </p>
+                                )}
 
-            <a href="https://wargamechampion.itch.io/gardens-of-music" target="_blank" rel="noopener noreferrer">
-              View on itch.io
-            </a>
-          </div>
-        </article>
+                                {details.role && (
+                                    <p>
+                                        <strong>Role: </strong>
+                                        {details.role}
+                                    </p>
+                                )}
 
-        {/* 3D action-platformer project */}
-        <article className="project-card">
-          <img src={climbTheTowerImage} alt="HM4: Climb the Tower" className="project-image"/>
+                                {details.outcome && (
+                                    <p>
+                                        <strong>Outcome: </strong>
+                                        {details.outcome}
+                                    </p>
+                                )}
 
-          <div className="project-info">
-            <h3>HM4: Climb the Tower</h3>
-
-            <p>
-              A challenging 3D action-platformer built around repeated attempts
-              to climb a multi-floor tower. Players unlock heroes, equipment,
-              skills, potions, and permanent improvements while learning how
-              to overcome different environments and enemies.
-            </p>
-
-            <p>
-              <strong>Role:</strong> Independent Game Developer
-            </p>
-
-            <p>
-              <strong>Outcome:</strong> Produced and released a playable prototype featuring multiple themed tower areas, progression systems, combat, and unlockable content.
-            </p>
-
-            <a href="https://wargamechampion.itch.io/heroes-and-monsters-4" target="_blank" rel="noopener noreferrer">
-              View on itch.io
-            </a>
-          </div>
-        </article>
-
-      </div>
-    </main>
-  )
+                                {details.link && (
+                                    <a
+                                        href={details.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        View on itch.io
+                                    </a>
+                                )}
+                            </div>
+                        </article>
+                    )
+                })}
+            </div>
+        </main>
+    )
 }
